@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <title>Encore</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS v5.3.8 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      .nav-background {
+        background: #cfcfcf;
+        background: linear-gradient(
+          0deg,
+          rgba(207, 207, 207, 1) 46%,
+          rgba(255, 255, 255, 1) 100%
+        );
+      }
+
+      .no-border {
+        border: none;
+      }
+
+      .hover {
+        transition: all 0.3s ease;
+      }
+
+      .hover:hover {
+        box-shadow: 0 0 2rem 0.01rem rgb(182, 182, 182);
+        cursor: pointer;
+      }
+
+      .image-size {
+        width: auto;
+        height: 250px;
+        object-fit: scale-down;
+      }
+
+      .page-item > a {
+        text-decoration: none;
+        color: rgb(77, 77, 77);
+      }
+
+      .page-item > a:hover {
+        color: blue;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    {% include 'main/includes/navbar.html' %}
+
+    {% include 'main/includes/messages.html' %}
+
+
+   {% block content %}
+   
+   {% endblock %}
+  </body>
+</html>
