@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import Product
+from .models import Product, Article
 from django.core.paginator import Paginator
 from .forms import NewUserForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm 
 
@@ -63,6 +63,23 @@ def login_request(request):
     form = AuthenticationForm()
     return render(request = request, template_name = 'main/login.html', context = {'form': form})
 
+# Logout request view
+def logout_request(request):
+    logout(request)
+    messages.success(request , 'You are successfully logged out.')
+    return redirect('main:homepage')
 
+# Blog function
+def blog(request):
+    blog = Article.objects.all().order_by('-article_published')
+    paginator = Paginator(blog, 6)
+    page_number = request.GET.get('page')    
+    blog_object = paginator.get_page(page_number)
+    return render(request = request, template_name= 'main/blog.html', context= {'blog_object': blog_object})
+
+# Article view
+def article(request, article_page):
+    article = Article.objects.get(article_slug=article_page)
+    return render(request = request, template_name= 'main/article.html', context= {'article': article})
 
 

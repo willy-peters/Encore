@@ -23,13 +23,18 @@
               <a class="nav-link" href="/products">Products</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Blog</a>
+              <a class="nav-link" href="/blog">Blog</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Contact</a>
             </li>
           </ul>
-          <a class="text-dark"  href="/login">Login</a>
-          <a class="btn btn-sm btn-primary m-2"  href="/register">Register</a>
+          {% if user.is_authenticated %}
+            <a class="text-dark" href="/logout">Logout</a>
+            <a href="" class="btn btn-sm btn-outline-primary m-2"> {{ user.username | title }} </a>
+          {% else %}
+            <a class="text-dark" href="/login">Login</a>
+            <a class="btn btn-sm btn-primary m-2"  href="/register">Register</a>
+          {% endif %}
         </div>
       </nav>

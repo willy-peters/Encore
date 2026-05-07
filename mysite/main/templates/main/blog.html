@@ -1,0 +1,54 @@
+{% extends 'main/header.html' %}
+
+{% block content %}
+
+    <div class="container py-4">
+        <h1 class="fw-bold">Articles</h1>
+        <hr>
+        <br>
+
+        <div class="row">
+            {% for b in blog_object %}
+                <a href=" /{{ b.article_slug }} " style=" text-decoration: none ">
+                <div class="col-lg-12 pb-4 text-dark">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <img src="{{ b.article_image.url }}" alt="{{ b.article_name }}" class="img-fluid rounded">
+                        </div>
+
+                        <div class="col-lg-8 col-md-6 col-sm-12">
+                            <h5>{{ b.article_name }}</h5>
+                            <p class="card-text text-muted"> {{ b.article_published }} </p>
+                            <p> {{ b.article_content|safe|truncatewords:25 }} </p>
+                            <button class="btn btn-outline-dark btn-sm">View Post</button>
+                        </div>
+                    </div>
+                </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div aria-label="Page navigation" class="container">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    {% if blog_object.has_previous %}
+                        <a class="pe-2" href="?page=1" class="text-decoration-none" >&laquo; </a>
+                        <a class="pe-2" href="?page={{ blog_obj.previous_page_number }}">Previous</a>
+                    {% endif %}
+                </li>
+                <li class="page-item">
+                     Page {{ blog_object.number }} of {{ blog_object.paginator.num_pages }}
+                </li>
+                 <li class="page-item">
+                    {% if blog_object.has_next %}
+                        <a class="ps-2" href="?page={{ blog_object.next_page_number }}">Next</a>
+                        <a class="ps-2" href="?page={{ blog_object.paginator.num_pages }}">&raquo;</a>
+                    {% endif %}
+                 </li>
+            </ul>
+        </div>
+
+    </div>
+
+{% endblock %}
