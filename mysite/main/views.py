@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Product, Article
+from .models import Product, Article, Tag
 from django.core.paginator import Paginator
 from .forms import NewUserForm
 from django.contrib.auth import login, authenticate, logout
@@ -11,7 +11,10 @@ from django.contrib.auth.forms import AuthenticationForm
 # Homepage view
 def homepage(request):
     product = Product.objects.all()[:4]
-    return render(request = request, template_name='main/home.html', context={'product': product})
+    new_posts = Article.objects.all().order_by('-article_published')[:4]
+    featured = Article.objects.filter(article_tags__tag_name = 'Featured')[:3]
+    most_recent = new_posts.first()
+    return render(request = request, template_name='main/home.html', context={'product': product, 'featured': featured, 'most_recent': most_recent, 'new_posts': new_posts})
 
 
 # Products page view
@@ -70,12 +73,17 @@ def logout_request(request):
     return redirect('main:homepage')
 
 # Blog function
-def blog(request):
-    blog = Article.objects.all().order_by('-article_published')
+def blog(request, tag_page):
+    if tag_page == 'articles':
+        tag = ''
+        blog = Article.objects.all().order_by('-article_published')
+    else:
+        tag = Tag.objects.get(tag_slug = tag_page)
+        blog = Article.objects.filter(article_tags = tag).order_by('-article_published')
     paginator = Paginator(blog, 6)
     page_number = request.GET.get('page')    
     blog_object = paginator.get_page(page_number)
-    return render(request = request, template_name= 'main/blog.html', context= {'blog_object': blog_object})
+    return render(request = request, template_name= 'main/blog.html', context= {'blog_object': blog_object, 'tag': tag})
 
 # Article view
 def article(request, article_page):

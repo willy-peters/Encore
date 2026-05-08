@@ -33,6 +33,59 @@
         </div>
       </section>
 
+      <!-- Headlines -->
+      <div class="container py-4">
+        <div class="row">
+
+          <!-- New + Updated article -->
+          <div class="col-lg-3 col-md-3 col-sm-12">
+            <h5 class="text-primary">New + Updated</h5>
+            <hr>
+            {% for n in new_posts %}
+              <a href=" {{ n.article_slug }} " class="text-dark text-decoration-none">
+                <h3> {{ n.article_title }} </h3>
+                <p class="text-muted" style="font-size: 12px;">
+                  {{ n.article_published }}
+                </p>
+              </a>
+            {% endfor %}
+          </div>
+
+          <!-- Most recent article -->
+          <div class="col-lg-7 col-md-7 col-sm-12">
+
+            <a href=" /{{ most_recent.article_slug }} " class="text-dark text-decoration-none">
+                <img class="card-img-top" src=" {{ most_recent.article_image.url }} " alt=" {{ most_recent.article_title }} " />
+                <div class="card-body">
+                  <h3 class="card-title"> {{ most_article.article_title }} </h3>
+                  <p class="card-text text-muted" style="font-size: 12px;"> {{ most_recent.article_published }} </p>
+                  <p class="card-text">
+                    {{ most_recent.article_content | safe | truncatewords:50 }}
+                  </p>
+                  <button class="btn btn-primary btn-sm">Read More</button>
+                </div>
+            </a>
+
+          </div>
+
+          <!-- Featured article -->
+          <div class="col-lg-2 col-md-2 col-sm-12">
+            <h5 class="text-primary">Featured</h5>
+            <hr>
+            {% for f in featured %}
+              <a href=" /{{ f.article_slug }} " class="text-dark text-decoration-none">
+                <img src=" {{ f.article_image.url }} " alt=" {{ f.article_title }} " class="card-img-top" >
+                <h6> {{ f.article_title }} </h6>
+                <p class="text-muted"> {{ f.article_published }} </p>
+              </a>
+            {% endfor %}
+          </div>
+
+        </div>
+      </div>
+
+
+
       <!-- Products -->
         <div class="container py-4">
           <h2 class="fw-bold">Products</h2>

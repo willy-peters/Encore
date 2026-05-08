@@ -2,8 +2,13 @@
 
 {% block content %}
 
+    <!-- Blogs -->
     <div class="container py-4">
-        <h1 class="fw-bold">Articles</h1>
+        {% if tag %}
+            <h1 class="fw-bold"> {{ tag }} </h1>
+        {% else %}
+            <h1 class="fw-bold">Articles</h1>
+        {% endif %}
         <hr>
         <br>
 
@@ -12,12 +17,17 @@
                 <a href=" /{{ b.article_slug }} " style=" text-decoration: none ">
                 <div class="col-lg-12 pb-4 text-dark">
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <img src="{{ b.article_image.url }}" alt="{{ b.article_name }}" class="img-fluid rounded">
+                        <div class="col-lg-4 col-md-6 col-sm-12 my-auto">
+                            <img src="{{ b.article_image.url }}" alt="{{ b.article_title }}" class="img-fluid rounded">
                         </div>
 
-                        <div class="col-lg-8 col-md-6 col-sm-12">
-                            <h5>{{ b.article_name }}</h5>
+                        <div class="col-lg-8 col-md-6 col-sm-12 my-auto">
+                            <p>
+                                {% for tag in b.article_tags.all %}
+                                    <span class="badge text-bg-primary" style="font-size: 14px; color: white;"> {{ tag }} </span>
+                                {% endfor %}
+                            </p>
+                            <h5>{{ b.article_title }}</h5>
                             <p class="card-text text-muted"> {{ b.article_published }} </p>
                             <p> {{ b.article_content|safe|truncatewords:25 }} </p>
                             <button class="btn btn-outline-dark btn-sm">View Post</button>
