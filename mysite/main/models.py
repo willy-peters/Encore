@@ -1,5 +1,8 @@
 from django.db import models
 from tinymce import HTMLField   
+from django.contrib.auth.models import User
+from django.dispatch import receiver 
+from django.db.models.signals import post_save
 
 # Create your models here.
 class Product(models.Model):
@@ -35,3 +38,19 @@ class Article(models.Model):
 
     def __str__(self):
         return self.article_title
+    
+
+# Profile model
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    product = models.ManyToManyField(Product)
+
+    # decorator functions to override create_user_profile and save_user_profile functions from User model
+    @receiver(post_save, sender = User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user = instance)
+
+    @receiver(post_save, sender = User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()

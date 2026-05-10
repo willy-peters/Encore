@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Product, Article, Tag
 from django.core.paginator import Paginator
-from .forms import NewUserForm
+from .forms import NewUserForm, UserForm, ProfileForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm 
@@ -89,5 +89,11 @@ def blog(request, tag_page):
 def article(request, article_page):
     article = Article.objects.get(article_slug=article_page)
     return render(request = request, template_name= 'main/article.html', context= {'article': article})
+
+# Userpage function
+def userpage(request):
+    user_form = UserForm(instance = request.user)
+    profile_form = ProfileForm(instance = request.user.profile)
+    return render(request = request, template_name='main/user.html', context={'user': request.user, 'user_form': user_form, 'profile_form': profile_form})
 
 
