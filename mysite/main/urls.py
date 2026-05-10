@@ -11,6 +11,6 @@ urlpatterns = [
     path("login", views.login_request, name="login"),
     path("logout", views.logout_request, name="logout"),
     path("blog/<tag_page>", views.blog, name="blog"),
-    path("<article_page>", views.article, name="article"),
     path("user", views.userpage, name="userpage"),
+    path("<article_page>", views.article, name="article"),
 ]
