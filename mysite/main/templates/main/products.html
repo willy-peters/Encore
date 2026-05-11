@@ -17,7 +17,28 @@
                         <h4 class="card-title"> {{ p.product_name }} </h4>
                         <p class="card-text text-muted"> {{ p.product_type }} </p>
                         <p class="card-text"> {{ p.product_description }} </p>
-                        <a href=" {{ p.affiliate_url }} " class="btn btn-warning mt-auto">Buy Now</a>
+                        <div class="row">
+                            <div class="col-3 text-center">
+                                {% if user.is_authenticated %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="{{p.pk}}" name="product_pk">
+                                        <button type="submit" class="btn btn-outline-primary" style="font-size:18px; border-radius: 50%">★</button>
+                                    </form>
+                                {% else %}
+                                    <a href="/register" class="btn btn-outline-primary" style="font-size:18px; border-radius: 50%">★</a>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-4 text-center">
+
+                            </div>
+
+                            <div class="col-5 text-center">
+                                <a href=" {{ p.affiliate_url }} " class="btn btn-warning mt-auto">Buy Now</a>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 

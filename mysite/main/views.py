@@ -10,6 +10,12 @@ from django.contrib.auth.forms import AuthenticationForm
 
 # Homepage view
 def homepage(request):
+    if request.method == "POST":
+        product_id = request.POST.get("product_pk")
+        product = Product.objects.get(id = product_id)
+        request.user.profile.product.add(product)
+        messages.success(request, f'{product} added to wishlist!')
+        return redirect("main:homepage")
     product = Product.objects.all()[:4]
     new_posts = Article.objects.all().order_by('-article_published')[:4]
     featured = Article.objects.filter(article_tags__tag_name = 'Featured')[:3]
@@ -19,6 +25,12 @@ def homepage(request):
 
 # Products page view
 def products(request):
+    if request.method == "POST":
+        product_id = request.POST.get("product_pk")
+        product = Product.objects.get(id = product_id)
+        request.user.profile.product.add(product)  
+        messages.success(request,(f'{product} added to wishlist.'))
+        return redirect("main:products")
     products = Product.objects.all()
     paginator = Paginator(products, 6)
     page_number = request.GET.get('page')
@@ -92,6 +104,18 @@ def article(request, article_page):
 
 # Userpage function
 def userpage(request):
+    if request.method == "POST":
+        user_form = UserForm(request.POST, instance = request.user)
+        profile_form = ProfileForm(request.POST, instance = request.user.profile)
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, ('Your profile was updated successfully!'))
+        elif profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, ('Your wishlist was saved successfully!'))
+        else:
+            messages.error('Unable to complete request')
+        return redirect('main:userpage')
     user_form = UserForm(instance = request.user)
     profile_form = ProfileForm(instance = request.user.profile)
     return render(request = request, template_name='main/user.html', context={'user': request.user, 'user_form': user_form, 'profile_form': profile_form})
