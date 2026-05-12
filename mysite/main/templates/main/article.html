@@ -5,7 +5,7 @@
 <div class="article-banner text-center">
     <br><br>
   <div class="container">
-    <h1 class="fw-bold">{{ article.article_title }}</h1>
+    <h1 class="article-heading fw-bold">{{ article.article_title }}</h1>
     <p class="fw-bold" style="font-size: 15px">
       {{ article.article_published }}
     </p>
@@ -39,6 +39,15 @@
     z-index: auto;
     position: relative;
   }
+   /* all devices up to 786px */
+        @media only screen and (max-width:768px) {
+        	.article-heading {font-size:22px !important;}
+        }
+
+    	/* devices 768px to 1200px */
+    	@media only screen and (min-width:768px) and (max-width:1200px) {
+    		.article-heading {font-size:27px !important;}
+    	}
 </style>
 
 {% endblock %}
