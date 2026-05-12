@@ -19,6 +19,8 @@
                         <h4 class="card-title"> {{ p.product_name }} </h4>
                         <p class="card-text text-muted"> {{ p.product_type }} </p>
                         <p class="card-text"> {{ p.product_description }} </p>
+                        <p class="text-muted" style="font-size:12px">Comfort: {{ p.comfort_average }} | Performance: {{ p.performance_average }} | Durability: {{ p.durability_average }}</p>
+
                         <div class="row">
                             <div class="col-3 text-center">
                                 {% if user.is_authenticated %}
@@ -42,10 +44,10 @@
 
                         </div>
                     </div>
-                    <div  id="collapse{{p.pk}}" class="collapse py-2 px-4">
+                    <div  id="collapse{{p.pk}}" class="collapse px-2">
                         <h5 class="fw-bold">Product Score: {{ p.product_name }}</h5>
                         <hr>
-                        <form method="post">
+                        <form class="p-4" method="post">
                             {% csrf_token %}
                             {% for field in vote_form %}
                                 <div class="row mb-3">
@@ -69,9 +71,9 @@
                             <div class="text-end">
                                 {% if user.is_authenticated %}
                                     <input type="hidden" value="{{p.pk}}" name="product">
-                                    <button type="submit" class="btn btn-outline-primary btn-sm">Submit Score</button>
+                                    <button type="submit" name="score_submit" class="btn btn-outline-primary">Submit Score</button>
                                 {% else %}
-                                    <a href="/register" class="btn btn-outline-primary btn-sm">Register</a>
+                                    <a href="/register" class="btn btn-outline-primary">Register</a>
                                 {% endif %}
                             </div>
                         </form>

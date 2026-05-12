@@ -26,6 +26,20 @@ def homepage(request):
 # Products page view
 def products(request):
     if request.method == "POST":
+        if "score_submit" in request.POST:
+            vote_form = VoteForm(request.POST)
+            if vote_form.is_valid():
+                form = vote_form.save(commit = False)
+                form.profile = request.user.profile
+                product_id = request.POST.get("product")
+                form.product = Product.objects.get(id = product_id)
+                form.save()
+                form.calculate_averages()
+                messages.success(request, (f'{form.product} product score submitted.'))
+                return redirect("main:products")   
+            else: 
+                messages.error(request, ('Form is invalid.'))
+                return redirect("main:products")
         product_id = request.POST.get("product_pk")
         product = Product.objects.get(id = product_id)
         request.user.profile.product.add(product)  

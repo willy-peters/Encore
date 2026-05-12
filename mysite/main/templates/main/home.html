@@ -100,6 +100,8 @@
                   <h4 class="card-title">{{ p.product_name }}</h4>
                   <p class="card-text text-muted fs-6">{{ p.product_type }}</p>
                   <p class="card-text">{{ p.product_description }}</p>
+                  <p class="text-muted" style="font-size:12px">Comfort: {{ p.comfort_average }} | Performance: {{ p.performance_average }} | Durability: {{ p.durability_average }}</p>
+
                   <div class="row">
                     <div class="col-6">
                         {% if user.is_authenticated %}

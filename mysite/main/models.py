@@ -3,6 +3,7 @@ from tinymce import HTMLField
 from django.contrib.auth.models import User
 from django.dispatch import receiver 
 from django.db.models.signals import post_save
+from django.db.models import Sum
 
 # Create your models here.
 class Product(models.Model):
@@ -11,6 +12,9 @@ class Product(models.Model):
     product_description = models.TextField()
     affliate_url = models.SlugField(blank=True, null=True)
     product_image = models.ImageField(upload_to='images/')
+    comfort_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
+    performance_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
+    durability_average = models.DecimalField(default=0, max_digits=3, decimal_places=1)
 
     def __str__(self):
         return self.product_name
@@ -64,4 +68,21 @@ class Vote(models.Model):
     performance = models.IntegerField(default=0)
     durability = models.IntegerField(default=0)
 
+    def calculate_averages(self):
+        product = self.product
+        vote_queryset = Vote.objects.filter(product = product)
+        vote_count = vote_queryset.count()
+        comfort_total = vote_queryset.aggregate(Sum('comfort'))
+        performance_total = vote_queryset.aggregate(Sum('performance'))
+        durability_total = vote_queryset.aggregate(Sum('durability'))
+        # Populating the averages from Product model
+        if vote_count > 0:
+            product.comfort_average = comfort_total['comfort__sum']/vote_count
+            product.performance_average = performance_total['performance__sum']/vote_count
+            product.durability_average = durability_total['durability__sum']/vote_count
+        else:
+            product.comfort_average = None
+            product.performance_average = None
+            product.durability_average = None
+        product.save()
 
