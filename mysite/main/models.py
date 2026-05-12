@@ -54,3 +54,14 @@ class Profile(models.Model):
     @receiver(post_save, sender = User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
+
+
+# Vote model (voting the quality of products)
+class Vote(models.Model):
+    profile = models.ForeignKey(Profile, on_delete = models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete= models.CASCADE)
+    comfort = models.IntegerField(default=0)
+    performance = models.IntegerField(default=0)
+    durability = models.IntegerField(default=0)
+
+

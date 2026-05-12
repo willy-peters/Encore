@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Product, Article, Tag
 from django.core.paginator import Paginator
-from .forms import NewUserForm, UserForm, ProfileForm
+from .forms import NewUserForm, UserForm, ProfileForm, VoteForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm 
@@ -35,7 +35,8 @@ def products(request):
     paginator = Paginator(products, 6)
     page_number = request.GET.get('page')
     page_object = paginator.get_page(page_number)
-    return render(request = request, template_name = 'main/products.html', context = {'page_object' : page_object} )
+    vote_form = VoteForm()
+    return render(request = request, template_name = 'main/products.html', context = {'page_object' : page_object, 'vote_form': vote_form} )
 
 
 # Registration form view

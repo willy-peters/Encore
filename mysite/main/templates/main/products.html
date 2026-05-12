@@ -2,6 +2,8 @@
 
     {% block content %}
 
+    {% load crispy_forms_tags %}
+
     <!-- Products -->
     <div class="container py-5">
         <h1 class="fw-bold">Products</h1>
@@ -31,7 +33,7 @@
                             </div>
 
                             <div class="col-4 text-center">
-
+                                <a href="#collapse{{ p.pk }}" class="btn btn-outline-primary" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls=" collapse{{p.pk}}">Review</a>
                             </div>
 
                             <div class="col-5 text-center">
@@ -39,6 +41,41 @@
                             </div>
 
                         </div>
+                    </div>
+                    <div  id="collapse{{p.pk}}" class="collapse py-2 px-4">
+                        <h5 class="fw-bold">Product Score: {{ p.product_name }}</h5>
+                        <hr>
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for field in vote_form %}
+                                <div class="row mb-3">
+                                    <div class="col-10">
+                                        <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                                            {% if field.label %}
+                                                {{ field.label }}
+                                            {% endif %}
+                                        </label>
+                                        <div id="slider_{{ field.name }}_{{ p.pk }}" onclick="sliderUpdate('{{ field.name }}', {{ p.pk }})">
+                                            {{ field }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 my-auto">
+                                        <h6 class="text-center">
+                                            <span id="score_{{ field.name }}_{{ p.pk }}" class="text-primary fw-bold"> 5 </span>
+                                        </h6>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="text-end">
+                                {% if user.is_authenticated %}
+                                    <input type="hidden" value="{{p.pk}}" name="product">
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">Submit Score</button>
+                                {% else %}
+                                    <a href="/register" class="btn btn-outline-primary btn-sm">Register</a>
+                                {% endif %}
+                            </div>
+                        </form>
+
                     </div>
                 </div>
                 
@@ -69,5 +106,74 @@
         </div>
 
     </div>
+
+    <style>
+        /* Custom slider styling */
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0d6efd;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #0d6efd;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: #e9ecef;
+            height: 6px;
+            border-radius: 3px;
+        }
+        
+        input[type="range"]::-moz-range-track {
+            background: #e9ecef;
+            height: 6px;
+            border-radius: 3px;
+            border: none;
+        }
+        
+        .form-label {
+            font-size: 0.95rem;
+            color: #333;
+            text-transform: capitalize;
+        }
+    </style>
+
+    <script>
+        function sliderUpdate(field, pk) {
+            const sliderContainer = document.getElementById("slider_" + field + "_" + pk);
+            const sliderInput = sliderContainer.querySelector('input[type="range"]');
+            if (sliderInput) {
+                document.getElementById("score_" + field + "_" + pk).innerText = sliderInput.value;
+            }
+        }
+        
+        // Initialize sliders on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => {
+                slider.addEventListener('input', function() {
+                    const field = this.name;
+                    const pk = this.closest('.collapse').id.replace('collapse', '');
+                    sliderUpdate(field, pk);
+                });
+            });
+        });
+    </script>
 
     {% endblock %}
