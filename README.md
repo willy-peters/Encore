@@ -42,11 +42,11 @@ Whether you're exploring the codebase, contributing to development, or deploying
 
 * Python
 * Django
-* Django REST Framework *(if applicable)*
+* Django REST Framework
 
 ### Database
 
-* SQLite / PostgreSQL *(update accordingly)*
+* SQLite 
 
 ---
 
