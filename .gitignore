@@ -221,3 +221,11 @@ __marimo__/
 # VS code
 .vscode/
 
+# Deployment EB_CLI
+ebcli_venv
+.elasticbeanstalk
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
