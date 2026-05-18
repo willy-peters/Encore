@@ -225,5 +225,6 @@ __marimo__/
 ebcli_venv
 .elasticbeanstalk
 
-
+# .zip file for deployment to pythonanywhere
+mysite.zip
 
