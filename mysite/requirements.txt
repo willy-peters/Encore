@@ -1,9 +1,14 @@
 asgiref==3.11.1
+certifi==2026.4.22
+charset-normalizer==3.4.7
 crispy-bootstrap5==2026.3
 Django==5.2.14
 django-crispy-forms==2.6
 django-tinymce==5.0.0
+idna==3.15
 pillow==12.0.0
 python-decouple==3.8
+requests==2.34.2
 sqlparse==0.5.5
 tzdata==2026.2
+urllib3==2.7.0
