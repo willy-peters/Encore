@@ -225,7 +225,6 @@ __marimo__/
 ebcli_venv
 .elasticbeanstalk
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
+# .zip file for deployment to pythonanywhere
+mysite.zip
+
